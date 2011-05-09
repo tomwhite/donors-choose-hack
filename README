@@ -1,0 +1,15 @@
+A few scripts for "Hacking Education: A Contest for Developers and Data Crunchers", run by DonorsChoose.org.
+
+http://www.donorschoose.org/hacking-education
+
+You need to have Python and R installed.
+
+1. Download the projects and donations data from http://developer.donorschoose.org/the-data/
+
+2. Unzip them into this directory, with the names donorschoose-org-1apr2011-v1-projects.csv and donorschoose-org-1apr2011-v1-donations.csv.
+
+3. Run the analysis for distance between schools and donors:
+
+% python distance.py
+% r -f distance.r
+

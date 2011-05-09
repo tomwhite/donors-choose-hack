@@ -20,7 +20,7 @@
 #               properties (e.g., longitude).  Can also instantiate a Zip_Codes object and then
 #               have access to the zips like zipcode_obj['08083'].city (== SOMERDALE) which gives
 #               fast access to attributes and distance calculations
-
+#   05/07/2011: Small modification to support 3-digit ZIP prefix lookups. (Tom White)
 import math
 
 class _Zip_Code_Record:
@@ -41,6 +41,7 @@ class Zip_Codes:
     def __init__(self, zip_file="zips.txt"):
         '''Load the zip dB into memory and initialize our object.'''
         self.zips = {}
+        self.zip_prefixes = {}
 
         lines = [line.rstrip().replace('"', '') for line in open(zip_file)] # Do some cleanup on the lines before setting up our "db"
         for line in lines:
@@ -61,6 +62,7 @@ class Zip_Codes:
 
             zip, city, state, lon, lat = line.split(",")[1:-2]
             self.zips[zip] = _Zip_Code_Record(zip, city, state, lon, lat)
+            self.zip_prefixes[zip[0:3]] = zip
 
     def get_distance(self, zip1, zip2):
         '''Returns the distance between two points on the earth.
@@ -85,6 +87,9 @@ class Zip_Codes:
         c = 2 * math.asin(min(1, math.sqrt(a)))
         dist = 3956 * c
         return dist
+
+    def get_zip(self, zip_prefix):
+        return self.zip_prefixes[zip_prefix]
 
     def close_zips(self, starting_zip, radius):
         '''For any given zip code (assuming it's valid), returns any zip codes within a 'radius' mile radius.'''
